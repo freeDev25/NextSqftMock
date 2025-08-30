@@ -1,0 +1,27 @@
+.upload-fporm {
+  margin-top: 50px;
+  /* display: flex; */
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 400px;
+}
+
+.upload-fporm label {
+  font-weight: bold;
+  margin-right: 20px;
+}
+
+.upload-fporm #message {
+  margin-bottom: 15px;
+  margin-left: 0;
+}
+
+.upload-fporm #message.notice-warning {
+  border-left-color: #bf1d02;
+}
+
+.upload {
+  display: block;
+  margin-top: 15px;
+}
