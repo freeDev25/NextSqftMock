@@ -5,6 +5,7 @@
  */
 
 $selected_plan = null;
+$user_id = get_current_user_id();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
 
@@ -63,11 +64,17 @@ if ($query->have_posts()) {
 ?>
 
 <?php if ($selected_plan): ?>
-    <div class='notice notice-success'>
-        <p>You selected the <strong><?php echo esc_html($selected_plan); ?></strong> plan.
-            <button data-id="<?php echo esc_attr($selected_plan); ?>" id="proceed_to_subscription_payment">Proceed to payment</button>
-        </p>
-    </div>
+    <?php if ($user_id): ?>
+        <div class='notice notice-success'>
+            <p>You selected the <strong><?php echo esc_html($selected_plan); ?></strong> plan.
+                <button data-id="<?php echo esc_attr($selected_plan); ?>" id="proceed_to_subscription_payment">Proceed to payment</button>
+            </p>
+        </div>
+    <?php else: ?>
+        <div class='notice notice-warning'>
+            <p>Please <a href="<?php echo wp_login_url(get_permalink()); ?>">log in</a> to proceed with the subscription.</p>
+        </div>
+    <?php endif; ?>
 <?php endif; ?>
 
 
