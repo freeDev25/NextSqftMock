@@ -1,9 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/class-subscription-user-list-table.php';
-
 // Add custom admin subpage under Subscription post type
 add_action('admin_menu', 'rzpay_add_subscription_custom_subpage');
-function rzpay_add_subscription_custom_subpage() {
+function rzpay_add_subscription_custom_subpage()
+{
     add_submenu_page(
         'edit.php?post_type=subscription', // Parent slug
         'Subscription Users',        // Page title
@@ -14,7 +13,8 @@ function rzpay_add_subscription_custom_subpage() {
     );
 }
 
-function rzpay_subscription_custom_page_callback() {
+function rzpay_subscription_custom_page_callback()
+{
     $args = array(
         'post_type' => 'subscription',
         'post_status' => 'publish',
@@ -30,21 +30,24 @@ function rzpay_subscription_custom_page_callback() {
 ?>
     <div class="wrap">
         <h1>Subscription Users</h1>
-        <form method="post" action="">
+        <form method="post" action="" id="subscription-type-form">
             <div style="display: flex; gap: 30px; align-items: center; margin-bottom: 20px;">
-            <?php if (!empty($subscriptions)) {
-                foreach ($subscriptions as $sub) {
-                $sub_id = esc_attr($sub->ID);
-                $sub_title = esc_html($sub->post_title);
+                <?php if (!empty($subscriptions)) {
+                    foreach ($subscriptions as $sub) {
+                        $sub_id = esc_attr($sub->ID);
+                        $sub_title = esc_html($sub->post_title);
                 ?>
-                <label><input type="radio" name="subscription_type" value="<?php echo $sub_id; ?>" <?php checked($selected_subscription, $sub_id); ?>> <?php echo $sub_title; ?></label>
-                <?php
-                }
-            } else { ?>
-                <span>No subscriptions found.</span>
-            <?php } ?>
+                        <label>
+                            <input type="radio" name="subscription_type" value="<?php echo $sub_id; ?>" <?php checked($selected_subscription, $sub_id); ?> onchange="document.getElementById('subscription-type-form').submit();">
+                            <?php echo $sub_title; ?>
+                        </label>
+                    <?php
+                    }
+                } else { ?>
+                    <span>No subscriptions found.</span>
+                <?php } ?>
             </div>
-            <input type="submit" class="button button-primary" value="Search" />
+            <!-- <input type="submit" class="button button-primary" value="Search" /> -->
         </form>
         <?php
         // Display users table if a subscription is selected

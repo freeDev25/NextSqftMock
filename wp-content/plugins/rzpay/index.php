@@ -59,3 +59,6 @@ register_activation_hook(__FILE__, 'rzpay_create_orders_table');
 
 /* Create user-subscription table on plugin activation */
 register_activation_hook(__FILE__, 'rzpay_create_user_subscription_table');
+
+/* Create rzpay_subscription_features table */
+register_activation_hook(__FILE__, 'create_subscription_features_table');

@@ -117,3 +117,24 @@ add_action('rest_api_init', function () {
         'schema' => null,
     ]);
 });
+
+
+// Add custom column for active users count in subscription list view
+add_filter('manage_subscription_posts_columns', 'rzpay_subscription_active_users_column');
+function rzpay_subscription_active_users_column($columns) {
+    $columns['active_users'] = 'Active Users';
+    return $columns;
+}
+
+add_action('manage_subscription_posts_custom_column', 'rzpay_subscription_active_users_column_content', 10, 2);
+function rzpay_subscription_active_users_column_content($column, $post_id) {
+    if ($column === 'active_users') {
+        global $wpdb;
+        $table = $wpdb->prefix . 'rzpay_user_subscriptions';
+        $count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $table WHERE subscription_id = %d AND status = 'active'",
+            $post_id
+        ));
+        echo intval($count);
+    }
+}
