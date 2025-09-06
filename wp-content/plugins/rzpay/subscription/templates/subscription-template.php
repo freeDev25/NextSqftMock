@@ -21,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
 
         $result = rzpay_create_draft_user_subscription([
             'subscription_id' => $selected_plan,
-            'order_id' => 0
+            'order_id' => 0,
+            'receipt_id' => generate_unique_receipt_id()
         ]);
 
         rzpay_update_user_subscription_status_by_id($result['id'], 'active', intval(get_post_meta($selected_plan, 'validity_days', true)));
@@ -41,10 +42,8 @@ $args = [
 $query = new WP_Query($args);
 
 if ($query->have_posts()) {
-    // Get all features from the database
-    global $wpdb;
-    $features_table = $wpdb->prefix . 'subscription_features';
-    $all_features = $wpdb->get_results("SELECT * FROM $features_table ORDER BY feature_name ASC", ARRAY_A);
+    // Get all features from the database using the reusable function
+    $all_features = rzpay_get_all_features();
     
     while ($query->have_posts()) {
         $query->the_post();
@@ -53,24 +52,8 @@ if ($query->have_posts()) {
         $plan_price = get_post_meta(get_the_ID(), 'price', true);
         $plan_validity = get_post_meta(get_the_ID(), 'validity_days', true);
         
-        // Get features with limits for this subscription
-        $subscription_features = [];
-        if (!empty($all_features)) {
-            foreach ($all_features as $feature) {
-                $enabled_key = 'feature_enabled_' . $feature['feature_slug'];
-                $limit_key = 'feature_limit_' . $feature['feature_slug'];
-                $is_enabled = get_post_meta($plan_id, $enabled_key, true);
-                $limit_value = get_post_meta($plan_id, $limit_key, true);
-                
-                if ($is_enabled) {
-                    $feature_text = $feature['feature_name'];
-                    if (is_numeric($limit_value) && $limit_value > 0) {
-                        $feature_text .= ' (' . $limit_value . ')';
-                    }
-                    $subscription_features[] = $feature_text;
-                }
-            }
-        }
+        // Get features with limits for this subscription using the reusable function
+        $subscription_features = rzpay_get_subscription_features($plan_id, $all_features);
         
         $plans[] = [
             'id'       => $plan_id,
@@ -92,28 +75,8 @@ if ($query->have_posts()) {
     $plan_price = get_post_meta($selected_plan, 'price', true);
     $plan_validity = get_post_meta($selected_plan, 'validity_days', true);
     
-    // Get all feature limits for this subscription
-    global $wpdb;
-    $features_table = $wpdb->prefix . 'subscription_features';
-    $features = $wpdb->get_results("SELECT * FROM $features_table ORDER BY feature_name ASC", ARRAY_A);
-    $subscription_features = [];
-    
-    if (!empty($features)) {
-        foreach ($features as $feature) {
-            $enabled_key = 'feature_enabled_' . $feature['feature_slug'];
-            $limit_key = 'feature_limit_' . $feature['feature_slug'];
-            $is_enabled = get_post_meta($selected_plan, $enabled_key, true);
-            $limit_value = get_post_meta($selected_plan, $limit_key, true);
-            
-            if ($is_enabled) {
-                $feature_text = esc_html($feature['feature_name']);
-                if (is_numeric($limit_value) && $limit_value > 0) {
-                    $feature_text .= ' (' . $limit_value . ')';
-                }
-                $subscription_features[] = $feature_text;
-            }
-        }
-    }
+    // Get all feature limits for this subscription using the reusable function
+    $subscription_features = rzpay_get_subscription_features($selected_plan);
     ?>
     <?php if ($user_id): ?>
         <div class="card border-success mb-3" style="max-width: 500px; margin: 30px auto 0; height: auto; cursor: default;">

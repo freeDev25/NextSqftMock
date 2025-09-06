@@ -11,7 +11,8 @@ function rzpay_create_user_subscription_table()
         id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         user_id BIGINT(20) UNSIGNED NOT NULL,
         subscription_id BIGINT(20) UNSIGNED NOT NULL,
-        order_id VARCHAR(50) NOT NULL,
+        order_id VARCHAR(100) NOT NULL,
+        receipt_id VARCHAR(100) DEFAULT NULL,
         status VARCHAR(20) NOT NULL DEFAULT 'active', -- e.g., active, expired, cancelled, draft
         created_at DATETIME NOT NULL,
         updated_at DATETIME DEFAULT NULL,
@@ -19,7 +20,8 @@ function rzpay_create_user_subscription_table()
         PRIMARY KEY (id),
         KEY user_id (user_id),
         KEY subscription_id (subscription_id),
-        KEY order_id (order_id)
+        KEY order_id (order_id),
+        KEY receipt_id (receipt_id)
     ) $charset_collate;";
 
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -40,6 +42,7 @@ function rzpay_create_draft_user_subscription($request)
             'user_id' => $user_id,
             'subscription_id' => $subscription_id,
             'order_id' => $order_id,
+            'receipt_id' => isset($request['receipt_id']) ? $request['receipt_id'] : null,
             'status' => 'draft',
             'created_at' => current_time('mysql')
         ));

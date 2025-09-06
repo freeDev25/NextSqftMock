@@ -28,6 +28,12 @@
 - **Feature Limits:** Feature limits for subscriptions are stored as post meta with keys like `feature_limit_{feature_slug}`.
 - **Bulk Actions & Sorting:** Use WP_List_Table conventions for sortable columns and bulk actions.
 - **No Direct SQL in Templates:** All DB access is done in PHP logic, not in view templates.
+- **Script/Style Management:** 
+  - Create dedicated `load-scripts.php` files in each module directory.
+  - Include these files via `require_once` in the nearest `index.php` file.
+  - For admin-specific scripts/styles, use the `admin_enqueue_scripts` hook.
+  - For frontend scripts/styles, use the `wp_enqueue_scripts` hook.
+  - Always check page context before loading scripts to prevent unnecessary loading.
 
 ## Integration Points
 - **Razorpay:** Payment integration is in `wp-content/plugins/rzpay/vendor/razorpay/`.
@@ -37,6 +43,28 @@
 - To add a new admin page, use `add_submenu_page` under the `subscription` post type.
 - To add a new feature, update `subscription-features.php` and ensure the DB table is updated.
 - To add a new column to the admin list, use `manage_{post_type}_posts_columns` and `manage_{post_type}_posts_custom_column` hooks.
+- To add new scripts or styles:
+  ```php
+  // In /module/load-scripts.php
+  function module_admin_scripts($hook) {
+      // Only load on specific pages
+      if (strpos($hook, 'module') === false) {
+          return;
+      }
+      
+      wp_enqueue_script(
+          'module-admin-script',
+          plugin_dir_url(dirname(__FILE__)) . 'assets/admin.js',
+          ['jquery'],
+          '1.0.0',
+          true
+      );
+  }
+  add_action('admin_enqueue_scripts', 'module_admin_scripts');
+  
+  // In /module/index.php
+  require_once dirname(__FILE__) . '/load-scripts.php';
+  ```
 
 ## References
 - See `wp-content/plugins/rzpay/subscription/admin/` for all admin customizations.

@@ -5,5 +5,5 @@ define('RAZORPAY_KEY_SECRET', 'lghkPki6PVOYZtJQns3lxNyh');
 // Generate a unique receipt id for Razorpay order
 function generate_unique_receipt_id()
 {
-    return 'rcpt_' . uniqid() . '_' . time();
+    return 'NXSQFT_' . uniqid() . '_' . time();
 }

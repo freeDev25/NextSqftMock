@@ -18,6 +18,7 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 }
 
 // Example: Add your hooks or includes here
+require_once plugin_dir_path(__FILE__) . 'admin/index.php';
 require_once plugin_dir_path(__FILE__) . 'includes/index.php';
 require_once plugin_dir_path(__FILE__) . 'orders/index.php';
 require_once plugin_dir_path(__FILE__) . 'subscription/index.php';

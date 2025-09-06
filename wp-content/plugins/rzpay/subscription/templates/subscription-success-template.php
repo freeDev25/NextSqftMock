@@ -25,46 +25,27 @@ $subscription = $wpdb->get_row(
     ARRAY_A
 );
 
-// Get features for this subscription
-$features_table = $wpdb->prefix . 'subscription_features';
-$features = $wpdb->get_results("SELECT * FROM $features_table ORDER BY feature_name ASC", ARRAY_A);
+// Get features for this subscription using the reusable function
 $subscription_features = [];
-
-if ($subscription && !empty($features)) {
+if ($subscription) {
     $subscription_id = $subscription['subscription_id'];
-    $subscription_post = get_post($subscription_id);
-    
-    foreach ($features as $feature) {
-        $enabled_key = 'feature_enabled_' . $feature['feature_slug'];
-        $limit_key = 'feature_limit_' . $feature['feature_slug'];
-        $is_enabled = get_post_meta($subscription_id, $enabled_key, true);
-        $limit_value = get_post_meta($subscription_id, $limit_key, true);
-        
-        if ($is_enabled) {
-            $feature_text = esc_html($feature['feature_name']);
-            if (is_numeric($limit_value) && $limit_value > 0) {
-                $feature_text .= ' (' . $limit_value . ')';
-            }
-            $subscription_features[] = $feature_text;
-        }
-    }
+    $subscription_features = rzpay_get_subscription_features($subscription_id);
 }
 ?>
 
-<div class="success-container">
-    <div class="success-header">
-        <div class="success-icon">
-            <i class="fas fa-check-circle"></i>
-        </div>
-        <h1 class="success-title">Subscription Activated!</h1>
-        <div class="success-confetti"></div>
-    </div>
-    
+<div class="success-container"> ̰
     <?php if ($subscription): ?>
+        <div class="success-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1 class="success-title">Subscription Activated!</h1>
+            <div class="success-confetti"></div>
+        </div>
         <div class="subscription-details">
             <div class="subscription-plan-successfull">
                 <h2><?php echo esc_html(get_the_title($subscription['subscription_id'])); ?></h2>
-                
+
                 <div class="subscription-meta">
                     <div class="meta-item">
                         <i class="fas fa-calendar-alt"></i>
@@ -73,7 +54,7 @@ if ($subscription && !empty($features)) {
                             <strong><?php echo esc_html(date('F j, Y', strtotime($subscription['created_at']))); ?></strong>
                         </div>
                     </div>
-                    
+
                     <div class="meta-item">
                         <i class="fas fa-calendar-check"></i>
                         <div>
@@ -81,7 +62,7 @@ if ($subscription && !empty($features)) {
                             <strong><?php echo esc_html(date('F j, Y', strtotime($subscription['subscription_end_date']))); ?></strong>
                         </div>
                     </div>
-                    
+
                     <div class="meta-item">
                         <i class="fas fa-tag"></i>
                         <div>
@@ -90,7 +71,7 @@ if ($subscription && !empty($features)) {
                         </div>
                     </div>
                 </div>
-                
+
                 <?php if (!empty($subscription_features)): ?>
                     <div class="features-section">
                         <h3>Features Included</h3>
@@ -101,9 +82,9 @@ if ($subscription && !empty($features)) {
                         </ul>
                     </div>
                 <?php endif; ?>
-                
+
                 <div class="order-details">
-                    <p class="order-id">Order ID: <strong><?php echo esc_html($subscription['order_id']); ?></strong></p>
+                    <p class="order-id">Receipt ID: <strong><?php echo esc_html($subscription['receipt_id']); ?></strong></p>
                     <p>Keep this order ID for your reference.</p>
                 </div>
             </div>
@@ -113,7 +94,7 @@ if ($subscription && !empty($features)) {
             <p>We couldn't find any active subscription for your account. If you believe this is an error, please contact our support team.</p>
         </div>
     <?php endif; ?>
-    
+
     <div class="success-actions">
         <a href="<?php echo esc_url(home_url('/')); ?>" class="action-button primary">
             <i class="fas fa-home"></i> Go to Homepage
