@@ -76,13 +76,13 @@ add_filter('theme_page_templates', 'rzpay_add_plugin_template');
 function rzpay_add_plugin_template($templates)
 {
     $templates['user-subscription.php'] = 'User Subscription';
-    $templates['subscription-success-template.php'] = 'Subscription Success'; // Added success template
+    $templates['subscription-details-template.php'] = 'Subscription Details'; // Renamed template
     return $templates;
 }
 
 add_filter('template_include', 'rzpay_load_plugin_template');
 
-// Load the plugin template for user subscriptions and success
+// Load the plugin template for user subscriptions and details
 function rzpay_load_plugin_template($template)
 {
     if (is_page()) {
@@ -93,8 +93,8 @@ function rzpay_load_plugin_template($template)
                 return $plugin_template;
             }
         }
-        if ($selected_template === 'subscription-success-template.php') {
-            $plugin_template = WP_PLUGIN_DIR . '/rzpay/subscription/templates/subscription-success-template.php';
+        if ($selected_template === 'subscription-details-template.php') {
+            $plugin_template = WP_PLUGIN_DIR . '/rzpay/subscription/templates/subscription-details-template.php';
             if (file_exists($plugin_template)) {
                 return $plugin_template;
             }
