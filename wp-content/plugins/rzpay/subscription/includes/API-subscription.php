@@ -132,7 +132,7 @@ function rzpay_verify_subscription_payment(WP_REST_Request $request)
     // Update user-subscription status to 'active' and set end date
     rzpay_update_user_subscription_status($razorpay_order_id, 'active', $validity_days);
 
-    $redirect_url = home_url('/subscription-success'); // Change to your desired URL
+    $redirect_url = home_url('/subscription-details'); // Updated to match the new template name
 
     return new WP_REST_Response([
         'success' => true,
@@ -367,6 +367,6 @@ function rzpay_start_free_subscription($subscription_id)
         'order_id' => 0,
         'status' => 'active',
         'subscription_end_date' => $subscription_end_date,
-        'redirect_url' => home_url('/subscription-success') // Change to your desired URL
+        'redirect_url' => home_url('/subscription-details') // Updated to match the new template name
     ), 200);
 }

@@ -22,10 +22,10 @@ function rzpay_enqueue_styles()
         '4.6.2'
     );
 
-    // Success page styles
+    // Subscription details page styles
     wp_enqueue_style(
-        'subscription-success-styles', 
-        plugin_dir_url(__FILE__) . 'assets/success-style.css',
+        'subscription-details-styles', 
+        plugin_dir_url(__FILE__) . 'assets/details-style.css',
         array(),
         '1.0.0'
     );
