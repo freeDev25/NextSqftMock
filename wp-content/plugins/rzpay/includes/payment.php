@@ -26,7 +26,7 @@ function rzpay_initiate_order($amount, $currency = 'INR', $user_id = null)
 
     try {
         // Initialize Razorpay API
-        $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+        $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
 
         // Generate a unique receipt id
         $receipt_id = generate_unique_receipt_id();
@@ -48,7 +48,7 @@ function rzpay_initiate_order($amount, $currency = 'INR', $user_id = null)
         // Return only necessary fields
         $response = [
             'id' => $order['id'],
-            'key' => RAZORPAY_KEY_ID,
+            'key' => rzpay_get_key_id(),
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'status' => $order['status'],
@@ -109,11 +109,11 @@ function create_order()
     }
 
     $amount = sanitize_text_field($_POST['amount']);
-    $currency = sanitize_text_field("INR");
+    $currency = rzpay_get_currency();
     $user_id = get_current_user_id();
 
     // Initialize Razorpay API
-    $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+    $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
 
     try {
         // Generate a unique receipt id
@@ -156,7 +156,7 @@ function create_order()
         // Return only necessary fields
         $response = [
             'id' => $order['id'],
-            'key' => RAZORPAY_KEY_ID,
+            'key' => rzpay_get_key_id(),
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'status' => $order['status'],
@@ -187,7 +187,7 @@ function verify_payment()
     $signature = sanitize_text_field($_POST['razorpay_signature']);
 
     // Initialize Razorpay API
-    $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+    $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'rzpay_orders';

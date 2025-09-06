@@ -1,3 +1,22 @@
+/* Razorpay-style button for subscription payment */
+#proceed_to_subscription_payment {
+    background: #0f4c81;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 28px;
+    font-size: 1.1em;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(15,76,129,0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    outline: none;
+    margin-top: 10px;
+}
+#proceed_to_subscription_payment:hover, #proceed_to_subscription_payment:focus {
+    background: #1565c0;
+    box-shadow: 0 4px 16px rgba(21,101,192,0.15);
+}
 .subscription-page {
     max-width: 900px;
     margin: 40px auto;
@@ -17,27 +36,82 @@
 .subscription-plan {
     border: 1px solid #e0e0e0;
     padding: 24px;
-    width: 240px;
+    width: 280px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.subscription-plan:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .subscription-plan-title {
     margin-top: 0;
+    font-weight: 700;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+.features-title {
+    font-size: 0.95em;
+    font-weight: 700;
+    margin: 15px 0 10px;
+    color: #333;
 }
 
 .subscription-plan-features {
-    padding-left: 18px;
+    padding-left: 0;
+    margin-top: 10px;
+    list-style-type: none;
+}
+
+.subscription-plan-features li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.subscription-plan-features li:before {
+    content: "✓";
+    color: #27ae60;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.subscription-plan-price {
+    font-size: 1.4em;
+    margin-bottom: 5px;
+    color: #0f4c81;
+}
+
+.subscription-plan-validity {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.9em;
 }
 
 .choose-btn {
     margin-top: 12px;
-    padding: 8px 18px;
+    padding: 10px 18px;
     background: #3399cc;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    align-self: center;
+    width: 100%;
+}
+
+.choose-btn:hover {
+    background: #2277aa;
 }
 
 .rzpay-subscription-success {
@@ -61,4 +135,33 @@
     color: #fff;
     text-decoration: none;
     border-radius: 4px;
+}
+
+/* Card heading styles */
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6,
+.card .card-title,
+.card .card-subtitle {
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 1.1em;
+}
+
+.card-header {
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+/* Make feature headings bold in subscription details */
+.card-subtitle.mb-2.mt-3 {
+    font-weight: 700;
+    color: #333;
+}
+
+/* Bold text in alerts */
+.alert strong {
+    font-weight: 700;
 }

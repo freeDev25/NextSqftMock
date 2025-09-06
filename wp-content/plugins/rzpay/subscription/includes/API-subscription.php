@@ -75,7 +75,8 @@ function rzpay_initiate_subscription_payment(WP_REST_Request $request)
         // Create a draft user-subscription entry
         rzpay_create_draft_user_subscription([
             'subscription_id' => $subscription_id,
-            'order_id' => $response['id']
+            'order_id' => $response['id'],
+            'receipt_id' => $response['receipt']
         ]);
         return new WP_REST_Response(['data' => $response], 200);
     } catch (Exception $e) {

@@ -17,17 +17,17 @@ function initiate_razorpay_order($amount, $payment_for = 'default', $currency = 
     $receipt_id = generate_unique_receipt_id();
 
     try {
-        $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+        $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
         $order = $api->order->create([
             'amount' => floatval($amount) * 100, // Amount in paise
-            'currency' => strtoupper($currency),
+            'currency' => strtoupper(rzpay_get_currency()),
             'receipt' => $receipt_id,
             'payment_capture' => 1
         ]);
         // Return only necessary fields
         $response = [
             'id' => $order['id'],
-            'key' => RAZORPAY_KEY_ID,
+            'key' => rzpay_get_key_id(),
             'amount' => $order['amount'],
             'currency' => $order['currency'],
             'status' => $order['status'],
@@ -71,7 +71,7 @@ function verify_razorpay_payment($order_id, $payment_id, $signature)
             'razorpay_signature' => $signature
         ];
 
-        $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+        $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
         $api->utility->verifyPaymentSignature($attributes);
         return true;
     } catch (Exception $e) {

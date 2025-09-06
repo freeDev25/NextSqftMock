@@ -45,6 +45,9 @@ function handlePaymentError(orderId) {
         body: 'status=failed&razorpay_order_id=' + orderId
     })
         .then(response => response.text())
+        .then(() => {
+            rzpayError('Your payment was not completed. Please try again or contact support if the issue persists.', 'Payment Failed');
+        })
 }
 
 if (payBtn) {

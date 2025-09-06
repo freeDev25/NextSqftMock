@@ -18,6 +18,7 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 }
 
 // Example: Add your hooks or includes here
+require_once plugin_dir_path(__FILE__) . 'admin/index.php';
 require_once plugin_dir_path(__FILE__) . 'includes/index.php';
 require_once plugin_dir_path(__FILE__) . 'orders/index.php';
 require_once plugin_dir_path(__FILE__) . 'subscription/index.php';
@@ -59,3 +60,6 @@ register_activation_hook(__FILE__, 'rzpay_create_orders_table');
 
 /* Create user-subscription table on plugin activation */
 register_activation_hook(__FILE__, 'rzpay_create_user_subscription_table');
+
+/* Create rzpay_subscription_features table */
+register_activation_hook(__FILE__, 'create_subscription_features_table');

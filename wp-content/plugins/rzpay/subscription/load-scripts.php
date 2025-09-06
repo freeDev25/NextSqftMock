@@ -21,6 +21,38 @@ function rzpay_enqueue_styles()
         array(),
         '4.6.2'
     );
+
+    // Success page styles
+    wp_enqueue_style(
+        'subscription-success-styles', 
+        plugin_dir_url(__FILE__) . 'assets/success-style.css',
+        array(),
+        '1.0.0'
+    );
+    
+    // Main frontend styles for subscription functionality
+    wp_enqueue_style(
+        'rzpay-frontend-styles',
+        plugin_dir_url(dirname(__FILE__)) . 'assets/frontend.css',
+        array(),
+        '1.0.0'
+    );
+    
+    // Font Awesome for icons
+    wp_enqueue_style(
+        'font-awesome', 
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css',
+        array(),
+        '5.15.4'
+    );
+    
+    // Google Fonts - Inter font family
+    wp_enqueue_style(
+        'google-fonts-inter',
+        'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
+        array(),
+        null
+    );
 }
 
 add_action('wp_enqueue_scripts', 'rzpay_enqueue_styles');
