@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
  */
 function rzpay_get_key_id() {
     $key_id = get_option('rzpay_razorpay_key_id', '');
-    return !empty($key_id) ? $key_id : 'rzp_test_y2gQnU8lPwd64Y'; // Fallback to test key
+    return !empty($key_id) ? $key_id : ''; // Fallback to test key
 }
 
 /**
@@ -29,7 +29,7 @@ function rzpay_get_key_id() {
  */
 function rzpay_get_key_secret() {
     $key_secret = get_option('rzpay_razorpay_key_secret', '');
-    return !empty($key_secret) ? $key_secret : 'lghkPki6PVOYZtJQns3lxNyh'; // Fallback to test key
+    return !empty($key_secret) ? $key_secret : ''; // Fallback to test key
 }
 
 /**
