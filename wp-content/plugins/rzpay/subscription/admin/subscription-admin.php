@@ -10,7 +10,7 @@ function rzpay_register_subscription_post_type()
         'name' => 'Subscriptions',
         'singular_name' => 'Subscription',
         'add_new' => 'Add New',
-        'add_new_item' => 'Add New Subscription',
+        'add_new_item' => 'Add New',
         'edit_item' => 'Edit Subscription',
         'new_item' => 'New Subscription',
         'view_item' => 'View Subscription',
