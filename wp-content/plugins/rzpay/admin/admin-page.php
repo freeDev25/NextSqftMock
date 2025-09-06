@@ -159,7 +159,7 @@ function rzpay_dashboard_page() {
                                     <?php echo esc_html(ucfirst($order['status'])); ?>
                                 </span>
                             </td>
-                            <td><?php echo esc_html(date('M j, Y', strtotime($order['created_at']))); ?></td>
+                            <td><?php echo esc_html(rzpay_format_date($order['updated_at'])); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -317,7 +317,7 @@ function rzpay_payments_page() {
                             </span>
                         </td>
                         <td><?php echo esc_html($order['payment_id'] ?: '—'); ?></td>
-                        <td><?php echo esc_html(date('M j, Y H:i', strtotime($order['created_at']))); ?></td>
+                        <td><?php echo esc_html(rzpay_format_date($order['created_at'], 'M j, Y H:i')); ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>

@@ -43,7 +43,7 @@ if ($subscription) {
                         <i class="fas fa-calendar-alt"></i>
                         <div>
                             <span>Activated on</span>
-                            <strong><?php echo esc_html(date('F j, Y', strtotime($subscription['created_at']))); ?></strong>
+                            <strong><?php echo esc_html(rzpay_format_date($subscription['created_at'], 'F j, Y')); ?></strong>
                         </div>
                     </div>
 
@@ -51,7 +51,7 @@ if ($subscription) {
                         <i class="fas fa-calendar-check"></i>
                         <div>
                             <span>Valid until</span>
-                            <strong><?php echo esc_html(date('F j, Y', strtotime($subscription['subscription_end_date']))); ?></strong>
+                            <strong><?php echo esc_html(rzpay_format_date($subscription['subscription_end_date'], 'F j, Y')); ?></strong>
                         </div>
                     </div>
 

@@ -49,3 +49,24 @@ function rzpay_get_currency() {
 function generate_unique_receipt_id() {
     return 'NXSQFT_' . uniqid() . '_' . time();
 }
+
+/**
+ * Format a date safely
+ * 
+ * @param string|null $date The date string to format
+ * @param string $format The desired format (default: 'M j, Y')
+ * @param string $default What to return if the date is invalid (default: '—')
+ * @return string Formatted date or default value
+ */
+function rzpay_format_date($date, $format = 'M j, Y', $default = '—') {
+    if (empty($date) || $date == '0000-00-00 00:00:00') {
+        return $default;
+    }
+    
+    $timestamp = strtotime($date);
+    if ($timestamp === false) {
+        return $default;
+    }
+    
+    return date($format, $timestamp);
+}

@@ -83,8 +83,8 @@ if (!class_exists('Subscription_User_List_Table')) {
                     'email'        => $user_info ? esc_html($user_info->user_email) : '',
                     'phone'        => esc_html(get_user_meta($row['user_id'], 'phone', true)),
                     'status'       => esc_html($row['status']),
-                    'activated_on' => esc_html($row['created_at']),
-                    'expire_date'  => esc_html($row['subscription_end_date']),
+                    'activated_on' => rzpay_format_date($row['created_at']),
+                    'expire_date'  => rzpay_format_date($row['subscription_end_date']),
                     'action'       => '',
                 ];
             }
