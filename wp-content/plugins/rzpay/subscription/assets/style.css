@@ -24,6 +24,8 @@
 
 .subscription-title {
     text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 700;
 }
 
 .subscription-plans {
