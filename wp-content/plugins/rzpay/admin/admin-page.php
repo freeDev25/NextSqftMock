@@ -71,10 +71,10 @@ function rzpay_dashboard_page() {
     $active_subscriptions = $wpdb->get_var("SELECT COUNT(*) FROM $users_table WHERE status = 'active'");
     $orders_table = $wpdb->prefix . 'rzpay_orders';
     $total_orders = $wpdb->get_var("SELECT COUNT(*) FROM $orders_table");
-    $successful_orders = $wpdb->get_var("SELECT COUNT(*) FROM $orders_table WHERE status = 'completed'");
+    $successful_orders = $wpdb->get_var("SELECT COUNT(*) FROM $orders_table WHERE status = 'paid'");
     
     // Calculate revenue
-    $revenue = $wpdb->get_var("SELECT SUM(amount) FROM $orders_table WHERE status = 'completed'");
+    $revenue = $wpdb->get_var("SELECT SUM(amount) FROM $orders_table WHERE status = 'paid'");
     $revenue = $revenue ? $revenue : 0;
     
     // Get recent orders
@@ -352,14 +352,12 @@ function rzpay_settings_page() {
         $currency = sanitize_text_field($_POST['currency']);
         $success_page = absint($_POST['success_page']);
         $subscription_page = absint($_POST['subscription_page']);
-        $subscription_details_page = absint($_POST['subscription_details_page']);
         
         update_option('rzpay_razorpay_key_id', $razorpay_key_id);
         update_option('rzpay_razorpay_key_secret', $razorpay_key_secret);
         update_option('rzpay_currency', $currency);
         update_option('rzpay_success_page', $success_page);
         update_option('rzpay_subscription_page', $subscription_page);
-        update_option('rzpay_subscription_details_page', $subscription_details_page);
         
         echo '<div class="notice notice-success is-dismissible"><p>Settings saved successfully.</p></div>';
     }
