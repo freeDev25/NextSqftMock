@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await userHasSubscription(chosenPlan);
 
                 if (result !== false && result.has_active_subscription_as_same_plan) {
-                    alert('You already have an active subscription for this plan.');
+                    rzpayWarning('You already have an active subscription for this plan.', 'Duplicate Subscription');
                     jQuery('#planDetailsLoading').hide();
                     return;
                 } else if (result !== false && result.active_subscriptions.length > 0) {
-                    alert('You already have an active subscription. Please cancel the existing subscription to choose a new plan.');
+                    rzpayWarning('You already have an active subscription. Please cancel the existing subscription to choose a new plan.', 'Active Subscription');
                     jQuery('#planDetailsLoading').hide();
                     return;
                 } else {
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('#subscriptionForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('Form submitted with plan ID: ' + document.getElementById('chosenPlanId').value);
+        rzpaySuccess('Form submitted with plan ID: ' + document.getElementById('chosenPlanId').value, 'Submission Complete');
         chosenPlan = null;
         jQuery('#chosenPlanId').val('');
     });

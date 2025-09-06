@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const subscriptionId = this.getAttribute('data-id');
             if (!subscriptionId) {
-                alert('Subscription ID not found.');
+                rzpayError('Subscription ID not found.', 'Missing Information');
                 return;
             }
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Subscription payment initiated:', result);
 
             } catch (error) {
-                alert('An error occurred while processing your request. Please try again later.');
+                rzpayError('An error occurred while processing your request. Please try again later.', 'Request Failed');
             }
         });
     }
@@ -127,20 +127,21 @@ function verify_razorpay_payment(data) {
                 console.log('Payment verification response:', data);
                 if (data.success) {
                     // Payment verified successfully
-                    // alert('Payment successful! Thank you for your purchase.');
-                    window.location.href = data.redirect_url; // Redirect to the provided URL
+                    rzpaySuccess('Payment successful! Thank you for your purchase.', 'Payment Completed', function() {
+                        window.location.href = data.redirect_url; // Redirect to the provided URL
+                    });
                 } else {
                     // Payment verification failed
-                    alert('Payment verification failed. Please contact support.');
+                    rzpayError('Payment verification failed. Please contact support.', 'Verification Failed');
                 }
             })
             .catch(error => {
                 console.error('Error verifying payment:', error);
-                alert('An error occurred while verifying your payment. Please try again later.');
+                rzpayError('An error occurred while verifying your payment. Please try again later.', 'Verification Error');
             });
     } else {
         console.error('Missing payment verification parameters.');
-        alert('Invalid payment details. Please try again.');
+        rzpayError('Invalid payment details. Please try again.', 'Invalid Payment');
     }
 }
 
@@ -225,16 +226,17 @@ async function chooseFreeSubscription(subscriptionId) {
         const result = await response.json();
 
         if (result.success) {
-            alert('You have successfully subscribed to the free plan.');
-            window.location.href = result.redirect_url; // Redirect to the provided URL
+            rzpaySuccess('You have successfully subscribed to the free plan.', 'Subscription Activated', function() {
+                window.location.href = result.redirect_url; // Redirect to the provided URL
+            });
         } else {
-            alert('Failed to subscribe to the free plan. Please try again later.');
+            rzpayError('Failed to subscribe to the free plan. Please try again later.', 'Subscription Failed');
         }
 
         return result;
     } catch (error) {
         console.error('Failed to choose free subscription:', error);
-        alert('An error occurred while processing your request. Please try again later.');
+        rzpayError('An error occurred while processing your request. Please try again later.', 'Request Failed');
         return false;
     }
 }

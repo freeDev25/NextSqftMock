@@ -33,7 +33,7 @@ if ($subscription) {
 }
 ?>
 
-<div class="success-container"> ̰
+<div class="success-container">
     <?php if ($subscription): ?>
         <div class="success-header">
             <div class="success-icon">
