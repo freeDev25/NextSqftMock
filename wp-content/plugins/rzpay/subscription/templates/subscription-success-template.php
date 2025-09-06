@@ -91,7 +91,25 @@ if ($subscription) {
         </div>
     <?php else: ?>
         <div class="no-subscription">
-            <p>We couldn't find any active subscription for your account. If you believe this is an error, please contact our support team.</p>
+            <div class="no-subscription-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <h2>No Active Subscription</h2>
+            <p>We couldn't find any active subscription for your account. To access premium features, you'll need to subscribe to one of our plans.</p>
+            
+            <?php
+            // Get subscription page link from options
+            $subscription_page_id = get_option('rzpay_subscription_page', 0);
+            if ($subscription_page_id > 0):
+            ?>
+                <div class="subscription-cta">
+                    <a href="<?php echo esc_url(get_permalink($subscription_page_id)); ?>" class="action-button primary">
+                        <i class="fas fa-tag"></i> View Subscription Plans
+                    </a>
+                </div>
+            <?php else: ?>
+                <p>Please contact our support team to learn more about available subscription options.</p>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 
@@ -102,6 +120,15 @@ if ($subscription) {
         <a href="<?php echo esc_url(home_url('/my-account')); ?>" class="action-button secondary">
             <i class="fas fa-user"></i> My Account
         </a>
+        <?php
+        // Add link to subscription details page if user has active subscription and the page is set
+        $subscription_details_page_id = get_option('rzpay_subscription_details_page', 0);
+        if ($subscription && $subscription_details_page_id > 0):
+        ?>
+            <a href="<?php echo esc_url(get_permalink($subscription_details_page_id)); ?>" class="action-button secondary">
+                <i class="fas fa-list"></i> Subscription Details
+            </a>
+        <?php endif; ?>
     </div>
 </div>
 

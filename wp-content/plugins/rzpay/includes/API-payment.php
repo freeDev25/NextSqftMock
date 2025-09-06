@@ -76,7 +76,7 @@ function rzpay_verify_signature($attributes)
         throw new Exception('Missing required parameters for signature verification.');
     }
 
-    $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+    $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
     $api->utility->verifyPaymentSignature($attributes);
 }
 
@@ -95,7 +95,7 @@ function rzpay_verify_payment($request)
             'razorpay_signature' => $input['razorpay_signature']
         ];
 
-        $api = new Api(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET);
+        $api = new Api(rzpay_get_key_id(), rzpay_get_key_secret());
         $api->utility->verifyPaymentSignature($attributes);
 
         /**

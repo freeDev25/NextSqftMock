@@ -185,6 +185,24 @@ function rzpay_dashboard_page() {
                     <a href="<?php echo esc_url(admin_url('admin.php?page=rzpay-settings')); ?>" class="button button-secondary">
                         <span class="dashicons dashicons-admin-settings"></span> Settings
                     </a>
+                    
+                    <?php 
+                    // Add links to frontend pages if they are set
+                    $subscription_page_id = get_option('rzpay_subscription_page', 0);
+                    $subscription_details_page_id = get_option('rzpay_subscription_details_page', 0);
+                    
+                    if ($subscription_page_id > 0): 
+                    ?>
+                    <a href="<?php echo esc_url(get_permalink($subscription_page_id)); ?>" class="button button-secondary" target="_blank">
+                        <span class="dashicons dashicons-visibility"></span> View Subscription Page
+                    </a>
+                    <?php endif; ?>
+                    
+                    <?php if ($subscription_details_page_id > 0): ?>
+                    <a href="<?php echo esc_url(get_permalink($subscription_details_page_id)); ?>" class="button button-secondary" target="_blank">
+                        <span class="dashicons dashicons-id"></span> View Details Page
+                    </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -333,11 +351,15 @@ function rzpay_settings_page() {
         $razorpay_key_secret = sanitize_text_field($_POST['razorpay_key_secret']);
         $currency = sanitize_text_field($_POST['currency']);
         $success_page = absint($_POST['success_page']);
+        $subscription_page = absint($_POST['subscription_page']);
+        $subscription_details_page = absint($_POST['subscription_details_page']);
         
         update_option('rzpay_razorpay_key_id', $razorpay_key_id);
         update_option('rzpay_razorpay_key_secret', $razorpay_key_secret);
         update_option('rzpay_currency', $currency);
         update_option('rzpay_success_page', $success_page);
+        update_option('rzpay_subscription_page', $subscription_page);
+        update_option('rzpay_subscription_details_page', $subscription_details_page);
         
         echo '<div class="notice notice-success is-dismissible"><p>Settings saved successfully.</p></div>';
     }
@@ -347,6 +369,8 @@ function rzpay_settings_page() {
     $razorpay_key_secret = get_option('rzpay_razorpay_key_secret', '');
     $currency = get_option('rzpay_currency', 'INR');
     $success_page = get_option('rzpay_success_page', 0);
+    $subscription_page = get_option('rzpay_subscription_page', 0);
+    $subscription_details_page = get_option('rzpay_subscription_details_page', 0);
     ?>
     <div class="wrap">
         <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
@@ -400,6 +424,23 @@ function rzpay_settings_page() {
                         ]);
                         ?>
                         <p class="description">Select the page to redirect to after successful payment</p>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="subscription_page">Subscription Page</label></th>
+                    <td>
+                        <?php
+                        wp_dropdown_pages([
+                            'name' => 'subscription_page',
+                            'echo' => 1,
+                            'show_option_none' => '— Select —',
+                            'option_none_value' => '0',
+                            'selected' => $subscription_page,
+                            'id' => 'subscription_page'
+                        ]);
+                        ?>
+                        <p class="description">Select the page where users can view available subscription plans</p>
                     </td>
                 </tr>
             </table>

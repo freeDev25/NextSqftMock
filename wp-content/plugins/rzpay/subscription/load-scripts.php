@@ -30,6 +30,14 @@ function rzpay_enqueue_styles()
         '1.0.0'
     );
     
+    // Main frontend styles for subscription functionality
+    wp_enqueue_style(
+        'rzpay-frontend-styles',
+        plugin_dir_url(dirname(__FILE__)) . 'assets/frontend.css',
+        array(),
+        '1.0.0'
+    );
+    
     // Font Awesome for icons
     wp_enqueue_style(
         'font-awesome', 
