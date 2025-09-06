@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plan_id'])) {
 
         rzpay_update_user_subscription_status_by_id($result['id'], 'active', intval(get_post_meta($selected_plan, 'validity_days', true)));
 
-        wp_redirect(home_url('/subscription-success'));
+        wp_redirect(home_url('/subscription-details'));
     }
 }
 

@@ -13,17 +13,9 @@ if (! defined('ABSPATH')) {
 
 get_header();
 
-// Get the user's latest active subscription
-global $wpdb;
+// Get the user's latest active subscription using our reusable function
 $user_id = get_current_user_id();
-$table_name = $wpdb->prefix . 'rzpay_user_subscriptions';
-$subscription = $wpdb->get_row(
-    $wpdb->prepare(
-        "SELECT * FROM $table_name WHERE user_id = %d AND status = 'active' ORDER BY created_at DESC LIMIT 1",
-        $user_id
-    ),
-    ARRAY_A
-);
+$subscription = rzpay_get_latest_active_subscription($user_id);
 
 // Get features for this subscription using the reusable function
 $subscription_features = [];
