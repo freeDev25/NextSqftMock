@@ -17,9 +17,9 @@ function rzpay_create_order_entry($order, $payment_for = 'default')
             'status'        => $order['status'],
             'receipt'       => $order['receipt'],
             'payment_for'   => $payment_for,
-            'created_at' => current_time('mysql'),
+            'created_at'    => current_time('mysql'),
         ],
-        ['%d', '%s', '%f', '%s', '%s',  '%s', '%s']
+        ['%d', '%s', '%f', '%s', '%s',  '%s', '%s', '%s'] // Added format specifier for created_at
     );
 
     if ($wpdb->last_error) {
@@ -46,7 +46,7 @@ function rzpay_verify_order($order_id, $payment_id, $status = 'paid')
             'updated_at' => current_time('mysql')
         ],
         ['order_id' => $order_id],
-        ['%s', '%s', '%s'],
+        ['%s', '%s', '%s'], // This part is already correct with 3 format specifiers
         ['%s']
     );
 
@@ -79,7 +79,7 @@ function update_order_status($order_id, $new_status, $payment_id = null, $failed
             'failed_reason' => $failed_reason
         ],
         ['order_id' => $order_id],
-        ['%s', '%s'],
+        ['%s', '%s', '%s', '%s'], // Fixed format specifiers for all 4 fields
         ['%s']
     );
 

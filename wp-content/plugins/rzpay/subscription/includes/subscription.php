@@ -138,3 +138,25 @@ function rzpay_user_has_subscription($user_id, $subscription_id)
 
     return false;
 }
+
+/**
+ * Get the latest active subscription for a user
+ * 
+ * @param int $user_id The user ID to check
+ * @return array|null The subscription data or null if none found
+ */
+function rzpay_get_latest_active_subscription($user_id)
+{
+    global $wpdb;
+    $table = $wpdb->prefix . 'rzpay_user_subscriptions';
+    
+    $subscription = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT * FROM $table WHERE user_id = %d AND status = 'active' ORDER BY created_at DESC LIMIT 1",
+            $user_id
+        ),
+        ARRAY_A
+    );
+    
+    return $subscription;
+}

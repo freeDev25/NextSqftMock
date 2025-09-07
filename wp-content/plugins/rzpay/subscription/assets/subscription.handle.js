@@ -145,7 +145,7 @@ function verify_razorpay_payment(data) {
     }
 }
 
-// Handle payment errors (optional)
+// Handle payment errors and redirect to payment failed page
 function handlePaymentError(orderId, reason) {
     var apiUrl = rzpayBaseUrl + '/wp-json/rzpay/v1/update-failed-payment';
 
@@ -162,10 +162,22 @@ function handlePaymentError(orderId, reason) {
         .then(response => response.json())
         .then(data => {
             console.log('Payment error handled:', data);
-            // Optionally, notify the user about the payment failure
+            
+            // Redirect to payment failed page with error information
+            const failedPageUrl = rzpayBaseUrl + '/payment-failed/';
+            const redirectUrl = new URL(failedPageUrl);
+            
+            // Add error and order ID as URL parameters
+            redirectUrl.searchParams.append('error', encodeURIComponent(reason || 'Your payment could not be processed.'));
+            redirectUrl.searchParams.append('order_id', orderId);
+            
+            // Redirect to the payment failed page
+            window.location.href = redirectUrl.toString();
         })
         .catch(error => {
             console.error('Error handling payment error:', error);
+            // Still redirect on error, but with generic message
+            window.location.href = rzpayBaseUrl + '/payment-failed/?error=An unexpected error occurred with your payment';
         });
 }
 
