@@ -22,6 +22,7 @@ require_once plugin_dir_path(__FILE__) . 'admin/index.php';
 require_once plugin_dir_path(__FILE__) . 'includes/index.php';
 require_once plugin_dir_path(__FILE__) . 'orders/index.php';
 require_once plugin_dir_path(__FILE__) . 'subscription/index.php';
+require_once plugin_dir_path(__FILE__) . 'template/index.php';
 require_once plugin_dir_path(__FILE__) . 'load-scripts.php';
 require_once plugin_dir_path(__FILE__) . 'test-api.php';
 
@@ -63,3 +64,19 @@ register_activation_hook(__FILE__, 'rzpay_create_user_subscription_table');
 
 /* Create rzpay_subscription_features table */
 register_activation_hook(__FILE__, 'create_subscription_features_table');
+
+/* Flush rewrite rules on plugin activation */
+function rzpay_flush_rewrite_rules() {
+    // This will ensure our custom URL rewrite rules take effect
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'rzpay_flush_rewrite_rules');
+
+/* Create payment failed page on plugin activation */
+function rzpay_create_pages_on_activation() {
+    // Trigger the payment failed page creation
+    if (function_exists('rzpay_create_payment_failed_page')) {
+        rzpay_create_payment_failed_page();
+    }
+}
+register_activation_hook(__FILE__, 'rzpay_create_pages_on_activation');

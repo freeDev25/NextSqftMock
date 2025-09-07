@@ -178,6 +178,17 @@ function rzpay_update_failed_payment(WP_REST_Request $request)
     if (!$updated) {
         return new WP_REST_Response(['error' => 'Failed to update payment details.'], 500);
     }
+    
+    // Get the payment failed page URL
+    $failed_page_url = home_url('payment-failed');
+    
+    // Include the URL in the response for frontend redirection
+    return new WP_REST_Response([
+        'success' => true,
+        'message' => 'Payment failure recorded.',
+        'redirect_url' => $failed_page_url,
+        'order_id' => $razorpay_order_id
+    ], 200);
 
     return new WP_REST_Response(['success' => true, 'message' => 'Failed payment details updated.'], 200);
 }
